@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import useOnClickOutside from "../utils/useOnClickOutside";
 
 const Nav = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const profileRef = useRef();
   const [profileMenuIsShowing, setProfileMenuIsShowing] = useState(false);
   useOnClickOutside(profileRef, () => setProfileMenuIsShowing(false));
+
+  const logout = () => setUser(null);
 
   return (
     <nav class="bg-red-800 shadow">
@@ -30,13 +32,13 @@ const Nav = () => {
                   aria-haspopup="true"
                   onClick={() => setProfileMenuIsShowing((prev) => !prev)}
                 >
-                  {user && user.username}mfarver
+                  <span className="mr-2">{user && user.username}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    className="h-5 w-5 text-white ml-2"
+                    className="h-5 w-5 text-white"
                   >
                     <path
                       strokeLinecap="round"
@@ -69,13 +71,23 @@ const Nav = () => {
                   aria-orientation="vertical"
                   aria-labelledby="user-menu"
                 >
-                  <button
-                    onClick={() => null}
-                    class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-                    role="menuitem"
-                  >
-                    Sign out
-                  </button>
+                  {user ? (
+                    <button
+                      onClick={logout}
+                      class="w-full text-left cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                      role="menuitem"
+                    >
+                      Sign out
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      class="cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                      role="menuitem"
+                    >
+                      Sign in
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

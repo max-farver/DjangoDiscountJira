@@ -16,6 +16,7 @@ export const UserContext = createContext({
 
 function App() {
   const [userStorage, setUserStorage] = useLocalStorage("user");
+
   const [user, setUser] = useState(userStorage);
   useEffect(() => {
     setUserStorage(user);
