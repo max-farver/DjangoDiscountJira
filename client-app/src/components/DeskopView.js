@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import useOnClickOutside from "../utils/useOnClickOutside";
+// import useOnClickOutside from "../utils/useOnClickOutside";
 
 // Fake Data
 const getItems = (count, offset = 0) =>
@@ -33,37 +33,37 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 // ---------------------------------
 
-const MiniMenu = (todo) => {
-  const [showing, setShowing] = useState(false);
+// const MiniMenu = (todo) => {
+//   const [showing, setShowing] = useState(false);
 
-  const toggleShowing = () => setShowing((prev) => !prev);
+//   const toggleShowing = () => setShowing((prev) => !prev);
 
-  return (
-    <div className="ml-2 relative">
-      <button
-        onClick={toggleShowing}
-        className="h-6 w-6 p-2 rounded-md flex flex-col items-center justify-center hover:bg-orange-100"
-      >
-        =
-      </button>
-      <ul
-        hidden={!showing}
-        className="absolute z-50 -top-10 -right-20 rounded-md h-20 w-32 p-2 text-white text-sm tracking-wide bg-gray-700"
-      >
-        <li>
-          <button onCLick={() => null}>🗑️ Delete Task</button>
-        </li>
-        <li>Temporary</li>
-        <li>Temporary</li>
-      </ul>
-    </div>
-  );
-};
+//   return (
+//     <div className="ml-2 relative">
+//       <button
+//         onClick={toggleShowing}
+//         className="h-6 w-6 p-2 rounded-md flex flex-col items-center justify-center hover:bg-orange-100"
+//       >
+//         =
+//       </button>
+//       <ul
+//         hidden={!showing}
+//         className="absolute z-50 -top-10 -right-20 rounded-md h-20 w-32 p-2 text-white text-sm tracking-wide bg-gray-700"
+//       >
+//         <li>
+//           <button onCLick={() => null}>Delete Task</button>
+//         </li>
+//         <li>Temporary</li>
+//         <li>Temporary</li>
+//       </ul>
+//     </div>
+//   );
+// };
 
 const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
-  const menuRef = useRef();
-  const [menuIsShowing, setMenuIsShowing] = useState(false);
-  useOnClickOutside(menuRef, () => setMenuIsShowing(false));
+  // const menuRef = useRef();
+  // const [menuIsShowing, setMenuIsShowing] = useState(false);
+  // useOnClickOutside(menuRef, () => setMenuIsShowing(false));
   return (
     <div
       ref={provided.innerRef}
@@ -81,8 +81,7 @@ const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
         <div class="flex-shrink-0 pr-2">
           <button
             id="pinned-project-options-menu-0"
-            onClick={() => setMenuIsShowing(true)}
-            aria-has-popup="true"
+            // onClick={() => setMenuIsShowing(true)}
             class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
           >
             <svg

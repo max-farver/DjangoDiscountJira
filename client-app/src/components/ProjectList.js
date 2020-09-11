@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import Layout from "./Layout";
 import useOnClickOutside from "../utils/useOnClickOutside";
 import { Link } from "react-router-dom";
 
@@ -8,65 +7,65 @@ const ProjectCard = ({ project, gridIndex }) => {
   const [menuIsShowing, setMenuIsShowing] = useState(false);
   useOnClickOutside(menuRef, () => setMenuIsShowing(false));
   return (
-    <Link
+    <div
       to={`/${project.id}`}
-      class="relative col-span-1 flex shadow-sm rounded-md"
+      class="relative col-span-1 flex shadow-sm rounded-md border-t border-r border-b border-gray-200 bg-white rounded-md"
     >
-      <div class="flex-shrink-0 flex items-center justify-center w-16 bg-red-600 uppercase text-white text-sm leading-5 font-medium rounded-l-md">
-        {project.owner}
-      </div>
-      <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div class="flex-1 px-4 py-2 text-sm leading-5 truncate">
-          <a
-            href="#"
-            class="text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150"
-          >
+      <div class="flex-shrink-0 flex items-center justify-center w-4 bg-red-600 border-red-600 border uppercase text-white text-sm leading-5 font-medium rounded-l-md"></div>
+      <Link
+        to={`/${project.id}`}
+        class="flex-1 flex items-center justify-between"
+      >
+        <div class="flex-1 px-4 py-2 text-md leading-5 truncate">
+          <h3 class="text-gray-900 font-medium hover:text-gray-600 transition ease-in-out duration-150">
             {project.name}
-          </a>
-          <p class="text-gray-500">{project.members.length} Members</p>
+          </h3>
+          <p class="text-gray-500 text-sm">{project.members.length} Members</p>
         </div>
-        <div class="flex-shrink-0 pr-2">
-          <button
-            id="pinned-project-options-menu-0"
-            onClick={() => setMenuIsShowing(true)}
-            aria-has-popup="true"
-            class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
-          </button>
+      </Link>
+      <div class="flex-shrink-0 pr-2 z-100 self-center">
+        <button
+          id="pinned-project-options-menu-0"
+          onClick={() => setMenuIsShowing(true)}
+          aria-has-popup="true"
+          class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+          </svg>
+        </button>
+        <div
+          ref={menuRef}
+          class={`${
+            menuIsShowing ? "block" : "hidden"
+          } z-10 mx-3 origin-top-right absolute right-10 top-3 w-48 mt-1 rounded-md shadow-lg`}
+        >
           <div
-            ref={menuRef}
-            class={`${
-              menuIsShowing ? "block" : "hidden"
-            } z-10 mx-3 origin-top-right absolute right-10 top-3 w-48 mt-1 rounded-md shadow-lg`}
+            class="rounded-md bg-white shadow-xs"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="pinned-project-options-menu-0"
           >
-            <div
-              class="rounded-md bg-white shadow-xs"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="pinned-project-options-menu-0"
-            >
-              <div class="py-1">
-                <button
-                  onClick={() => null}
-                  class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                  role="menuitem"
-                >
-                  Delete
-                </button>
-              </div>
+            <div class="py-1">
+              <button
+                onClick={() => null}
+                class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                role="menuitem"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
 const ProjectList = () => {
-  const [projects, setProjects] = useState([
+  const [projects, setProjects] = useState([]);
+
+  setProjects([
     {
       id: 1,
       name: "project1",

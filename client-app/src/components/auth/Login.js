@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -9,12 +10,12 @@ const Login = () => {
         </h2>
         <p class="mt-2 text-center text-sm leading-5 text-gray-600 max-w">
           Or{" "}
-          <a
-            href="#"
+          <Link
+            to="/register"
             class="font-medium text-red-600 hover:text-red-500 focus:outline-none focus:underline transition ease-in-out duration-150"
           >
             sign up now
-          </a>
+          </Link>
         </p>
       </div>
 
@@ -55,7 +56,7 @@ const Login = () => {
               </div>
             </div>
 
-            <div class="mt-6 flex items-center justify-between">
+            {/* <div class="mt-6 flex items-center justify-between">
               <div class="flex items-center">
                 <input
                   id="remember_me"
@@ -69,16 +70,7 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-
-              <div class="text-sm leading-5">
-                <a
-                  href="#"
-                  class="font-medium text-red-600 hover:text-red-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
+            </div> */}
 
             <div class="mt-6">
               <span class="block w-full rounded-md shadow-sm">

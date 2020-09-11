@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/tailwindOutput.css";
 import { useLocalStorage } from "./utils/useLocalStorage";
-import Board from "./components/Board";
 import ProjectList from "./components/ProjectList";
 import Layout from "./components/Layout";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import DeskopView from "./components/DeskopView";
 
 export const UserContext = createContext({
   username: null,
@@ -19,7 +19,7 @@ function App() {
   const [user, setUser] = useState(userStorage);
   useEffect(() => {
     setUserStorage(user);
-  }, [user]);
+  }, [user, setUserStorage]);
 
   return (
     <UserContext.Provider
@@ -41,7 +41,7 @@ function App() {
               <Register />
             </Route>
             <Route path="/:projectId">
-              <Board />
+              <DeskopView />
             </Route>
           </Switch>
         </Layout>

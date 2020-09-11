@@ -63,7 +63,7 @@ const Register = () => {
               </div>
             </div>
 
-            <div class="mt-6 flex items-center justify-between">
+            {/* <div class="mt-6 flex items-center justify-between">
               <div class="flex items-center">
                 <input
                   id="remember_me"
@@ -77,16 +77,7 @@ const Register = () => {
                   Remember me
                 </label>
               </div>
-
-              <div class="text-sm leading-5">
-                <a
-                  href="#"
-                  class="font-medium text-red-600 hover:text-red-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
+            </div> */}
 
             <div class="mt-6">
               <span class="block w-full rounded-md shadow-sm">
