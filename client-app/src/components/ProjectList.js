@@ -27,7 +27,6 @@ const ProjectCard = ({ project, gridIndex }) => {
         <button
           id="pinned-project-options-menu-0"
           onClick={() => setMenuIsShowing(true)}
-          aria-has-popup="true"
           class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
         >
           <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
