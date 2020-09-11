@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useOnClickOutside from "../utils/useOnClickOutside";
 import { Link } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const ProjectCard = ({ project, gridIndex }) => {
         <button
           id="pinned-project-options-menu-0"
           onClick={() => setMenuIsShowing(true)}
+          aria-has-popup="true"
           class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
         >
           <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -64,32 +65,34 @@ const ProjectCard = ({ project, gridIndex }) => {
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
 
-  setProjects([
-    {
-      id: 1,
-      name: "project1",
-      owner: "test",
-      members: ["one", "two"],
-    },
-    {
-      id: 2,
-      name: "project2",
-      owner: "test2",
-      members: ["one", "two"],
-    },
-    {
-      id: 3,
-      owner: "test3",
-      name: "project3",
-      members: ["one", "two"],
-    },
-    {
-      id: 4,
-      name: "project4",
-      owner: "test4",
-      members: ["one", "two"],
-    },
-  ]);
+  useEffect(() => {
+    setProjects([
+      {
+        id: 1,
+        name: "project1",
+        owner: "test",
+        members: ["one", "two"],
+      },
+      {
+        id: 2,
+        name: "project2",
+        owner: "test2",
+        members: ["one", "two"],
+      },
+      {
+        id: 3,
+        owner: "test3",
+        name: "project3",
+        members: ["one", "two"],
+      },
+      {
+        id: 4,
+        name: "project4",
+        owner: "test4",
+        members: ["one", "two"],
+      },
+    ]);
+  }, []);
 
   return (
     <>
