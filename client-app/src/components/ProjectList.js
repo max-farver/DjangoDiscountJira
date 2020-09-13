@@ -11,7 +11,7 @@ const AddProjectForm = ({ projects, setProjects }) => {
   const addNewProject = async (e) => {
     e.preventDefault();
     const newProject = await authenticatedFetch(
-      `http://localhost:8000/projects/`,
+      `https://discount-jira.herokuapp.com//projects/`,
       "POST",
       user,
       setUser,
@@ -132,7 +132,7 @@ const ProjectList = () => {
   useEffect(() => {
     const getProjects = async () => {
       const proj = await authenticatedFetch(
-        "http://localhost:8000/projects/",
+        "https://discount-jira.herokuapp.com//projects/",
         "GET",
         user,
         setUser

@@ -52,7 +52,7 @@ const getStuff = async (url, method, user, setUser, body) => {
 };
 
 const refreshToken = (user) => {
-  return fetch("http://localhost:8000/auth/jwt/refresh/", {
+  return fetch("https://discount-jira.herokuapp.com//auth/jwt/refresh/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -116,7 +116,7 @@ const AddTaskForm = ({ stage, stageIndex, board, setBoard }) => {
   const addNewTask = async (e, stageIndex) => {
     e.preventDefault();
     const task = await authenticatedFetch(
-      `http://localhost:8000/projects/${projectId}/todos/`,
+      `https://discount-jira.herokuapp.com//projects/${projectId}/todos/`,
       "POST",
       user,
       setUser,
@@ -197,7 +197,7 @@ const DeskopView = () => {
   useEffect(() => {
     const getProjects = async () => {
       const todos = await authenticatedFetch(
-        `http://localhost:8000/projects/${projectId}/todos/`,
+        `https://discount-jira.herokuapp.com//projects/${projectId}/todos/`,
         "GET",
         user,
         setUser
@@ -246,7 +246,7 @@ const DeskopView = () => {
 
   const updateTask = (task) => {
     authenticatedFetch(
-      `http://localhost:8000/projects/${projectId}/todos/${task.id}/`,
+      `https://discount-jira.herokuapp.com//projects/${projectId}/todos/${task.id}/`,
       "PUT",
       user,
       setUser,
@@ -260,7 +260,7 @@ const DeskopView = () => {
   const deleteTask = (e, taskId, taskIndex, stageIndex) => {
     e.preventDefault();
     authenticatedFetch(
-      `http://localhost:8000/projects/${projectId}/todos/${taskId}/`,
+      `https://discount-jira.herokuapp.com//projects/${projectId}/todos/${taskId}/`,
       "DELETE",
       user,
       setUser

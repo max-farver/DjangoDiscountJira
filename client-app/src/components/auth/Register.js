@@ -23,7 +23,7 @@ const Register = () => {
   };
 
   const registerUser = (data) => {
-    fetch("http://localhost:8000/auth/users/", {
+    fetch("https://discount-jira.herokuapp.com//auth/users/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const Register = () => {
         res.json();
       })
       .then((userInfo) =>
-        fetch("http://localhost:8000/auth/jwt/create/", {
+        fetch("https://discount-jira.herokuapp.com//auth/jwt/create/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
