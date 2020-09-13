@@ -10,7 +10,7 @@ const Login = () => {
 
   const { register, handleSubmit } = useForm();
   const login = async (data) => {
-    fetch("https://discount-jira.herokuapp.com//auth/jwt/create/", {
+    fetch("https://discount-jira.herokuapp.com/auth/jwt/create/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
