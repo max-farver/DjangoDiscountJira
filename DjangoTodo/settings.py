@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -119,25 +120,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = "/static/"
-
-# DRF Config
-SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("JWT", "Bearer"),
-}
-
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
+DJOSER = {"TOKEN_MODEL": None}
+
+
+# DRF Config
+SIMPLE_JWT = {
+    "JWT_ALLOW_REFRESH": True,
+    "JWT_EXPIRATION_DELTA": timedelta(hours=1),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+}
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 

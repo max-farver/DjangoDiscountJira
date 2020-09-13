@@ -22,7 +22,7 @@ class TodoSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(read_only=True)
-    todos = TodoSerializer(many=True)
+    todos = TodoSerializer(many=True, read_only=True)
     members = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:

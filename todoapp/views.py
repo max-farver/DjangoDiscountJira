@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models.query_utils import FilteredRelation
 from rest_framework import generics, permissions
 
 from todoapp.models import Invite, Project, Todo
@@ -13,7 +14,6 @@ from todoapp.serializers import (
 
 
 class ProjectList(generics.ListCreateAPIView):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [
         permissions.IsAuthenticated,
@@ -22,7 +22,7 @@ class ProjectList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(owner=user) | Q(members__pk=user.pk))
+        return Project.objects.filter(Q(owner=user) | Q(members__pk=user.pk)).distinct()
 
     # Set owner when a new project is saved
     def perform_create(self, serializer):
@@ -30,13 +30,14 @@ class ProjectList(generics.ListCreateAPIView):
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
+
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(Q(owner=user) | Q(members__pk=user.pk))
+
+        return Project.objects.filter(Q(owner=user) | Q(members__pk=user.pk)).distinct()
 
 
 class TodoList(generics.ListCreateAPIView):
@@ -48,7 +49,7 @@ class TodoList(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         proj_pk = self.kwargs["proj"]
-        return Todo.objects.filter(project__pk=proj_pk)
+        return Todo.objects.filter(project__pk=proj_pk).distinct()
 
     # Set owner and project when a new todo is saved
     def perform_create(self, serializer):
@@ -59,14 +60,13 @@ class TodoList(generics.ListCreateAPIView):
 
 
 class TodoDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Todo.objects.all()
     serializer_class = TodoSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        proj_pk = self.request.GET.get("proj")
-        return Todo.objects.filter(project__pk=proj_pk)
+        proj_pk = self.kwargs["proj"]
+        return Todo.objects.filter(project__pk=proj_pk).distinct()
 
 
 class InviteList(generics.ListCreateAPIView):

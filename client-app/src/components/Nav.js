@@ -12,21 +12,21 @@ const Nav = () => {
   const logout = () => setUser(null);
 
   return (
-    <nav class="bg-red-800 shadow">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="relative flex justify-between h-16">
+    <nav className="bg-red-800 shadow">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="relative flex justify-between h-16">
           <Link
             to="/"
             className="tracking-wide text-2xl font-bold text-white flex flex-col items center justify-center"
           >
             DiscountJira
           </Link>
-          <div class="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Profile dropdown */}
-            <div class="relative">
+            <div className="relative">
               <div>
                 <button
-                  class="flex justify-between items-center text-md text-white tracking-wide border-2 border-transparent rounded-full p-2 focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
+                  className="flex justify-between items-center text-md text-white tracking-wide border-2 border-transparent rounded-full p-2 focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
                   id="user-menu"
                   aria-label="User menu"
                   aria-haspopup="true"
@@ -61,12 +61,12 @@ const Nav = () => {
 
               <div
                 ref={profileRef}
-                class={`${
+                className={`${
                   profileMenuIsShowing ? "block" : "hidden"
                 } origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg`}
               >
                 <div
-                  class="py-1 rounded-md bg-white shadow-xs"
+                  className="py-1 rounded-md bg-white shadow-xs"
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="user-menu"
@@ -74,7 +74,7 @@ const Nav = () => {
                   {user ? (
                     <button
                       onClick={logout}
-                      class="w-full text-left cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                      className="w-full text-left cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
                       role="menuitem"
                     >
                       Sign out
@@ -82,7 +82,7 @@ const Nav = () => {
                   ) : (
                     <Link
                       to="/login"
-                      class="cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+                      className="cursor-pointer block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
                       role="menuitem"
                     >
                       Sign in

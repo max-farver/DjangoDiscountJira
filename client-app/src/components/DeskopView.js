@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useParams, useHistory } from "react-router-dom";
+import { UserContext } from "../App";
+import authenticatedFetch from "../utils/authenticatedFetch";
 // import useOnClickOutside from "../utils/useOnClickOutside";
 
 // Fake Data
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    name: `item ${k + offset}`,
-  }));
+// const getItems = (count, offset = 0) =>
+//   Array.from({ length: count }, (v, k) => k).map((k) => ({
+//     id: `item-${k + offset}-${new Date().getTime()}`,
+//     name: `item ${k + offset}`,
+//   }));
 
 // ------- for drag-n-drop ---------
 const reorder = (list, startIndex, endIndex) => {
@@ -69,20 +72,20 @@ const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      class="relative col-span-1 flex shadow-sm rounded-md"
+      className="relative col-span-1 flex shadow-sm rounded-md"
     >
-      <div class="flex-shrink-0 flex items-center justify-center w-2 bg-red-600 uppercase text-white text-sm leading-5 font-medium rounded-l-md"></div>
-      <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div class="flex-1 flex px-4 py-2 text-sm leading-5 truncate">
-          <h4 class="text-gray-900 font-medium transition ease-in-out duration-150">
+      <div className="flex-shrink-0 flex items-center justify-center w-2 bg-red-600 uppercase text-white text-sm leading-5 font-medium rounded-l-md"></div>
+      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+        <div className="flex-1 flex px-4 py-2 text-sm leading-5 truncate">
+          <h4 className="text-gray-900 font-medium transition ease-in-out duration-150">
             {todo.name}
           </h4>
         </div>
-        <div class="flex-shrink-0 pr-2">
+        <div className="flex-shrink-0 pr-2">
           <button
             id="pinned-project-options-menu-0"
-            // onClick={() => setMenuIsShowing(true)}
-            class="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
+            onClick={(e) => deleteTask(e, todo.id, todoIndex, stageIndex)}
+            className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -92,9 +95,9 @@ const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
               className="w-5 h-5 hover:text-red-600"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
               />
             </svg>
@@ -105,24 +108,113 @@ const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
   );
 };
 
-const DeskopView = () => {
-  const stageNames = [
-    "Backlog",
-    "UpNext",
-    "InProgress",
-    "NeedsReview",
-    "InReview",
-    "Complete",
-  ];
+const AddTaskForm = ({ stage, stageIndex, board, setBoard }) => {
+  const nameRef = useRef();
+  const { projectId } = useParams();
+  const { user, setUser } = useContext(UserContext);
 
-  const [board, setBoard] = useState([
-    getItems(5),
-    getItems(5, 5),
-    getItems(5, 10),
-    getItems(5, 15),
-    getItems(5, 20),
-    getItems(5, 25),
-  ]);
+  const addNewTask = async (e, stageIndex) => {
+    e.preventDefault();
+    const task = await authenticatedFetch(
+      `http://localhost:8000/projects/${projectId}/todos/`,
+      "POST",
+      user,
+      setUser,
+      {
+        name: nameRef.current.value,
+        stage: stage,
+      }
+    );
+    const newState = [...board];
+    newState[stageIndex].push(task);
+    setBoard(newState);
+
+    nameRef.current.value = "";
+  };
+
+  return (
+    <form onSubmit={(e) => addNewTask(e, stageIndex)}>
+      <label htmlFor="newTask" className="sr-only">
+        Add new task
+      </label>
+      <div className="mt-1 flex rounded-md shadow-sm">
+        <div className="relative flex-grow focus-within:z-10">
+          <input
+            id="newTask"
+            name="newTask"
+            ref={nameRef}
+            className="form-input block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+            placeholder="User can..."
+          />
+        </div>
+        <button
+          type="submit"
+          className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-yellow-300 hover:text-gray-500 hover:bg-yellow-200 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="text-gray-700 w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </button>
+      </div>
+    </form>
+  );
+};
+
+const stageNames = [
+  "Backlog",
+  "Up Next",
+  "In Progress",
+  "Needs Review",
+  "In Review",
+  "Complete",
+];
+
+const stageValues = [
+  "Backlog",
+  "UpNext",
+  "InProgress",
+  "NeedsReview",
+  "InReview",
+  "Complete",
+];
+const DeskopView = () => {
+  const { projectId } = useParams();
+  const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
+  const [board, setBoard] = useState([]);
+
+  useEffect(() => {
+    const getProjects = async () => {
+      const todos = await authenticatedFetch(
+        `http://localhost:8000/projects/${projectId}/todos/`,
+        "GET",
+        user,
+        setUser
+      );
+
+      const newBoard = stageValues.map((stage) =>
+        todos.filter((todo) => todo.stage === stage)
+      );
+
+      setBoard(newBoard);
+    };
+    getProjects();
+  }, [projectId, setUser, user]);
+
+  if (user === null) {
+    history.push("/login");
+  }
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -135,8 +227,6 @@ const DeskopView = () => {
     const sInd = +source.droppableId;
     const dInd = +destination.droppableId;
 
-    console.log("Source: ", source);
-
     if (sInd === dInd) {
       const items = reorder(board[sInd], source.index, destination.index);
       const newState = [...board];
@@ -148,18 +238,38 @@ const DeskopView = () => {
       newState[sInd] = result[sInd];
       newState[dInd] = result[dInd];
 
-      setBoard(newState.filter((group) => group.length));
+      newState[dInd][destination.index].stage = stageValues[dInd];
+      updateTask(newState[dInd][destination.index]);
+      setBoard(newState);
     }
-
-    // call PUT method for the todoItem to update STAGE
   };
 
-  const addNewTask = (e, stageIndex) => {
-    e.preventDefault();
+  const updateTask = (task) => {
+    authenticatedFetch(
+      `http://localhost:8000/projects/${projectId}/todos/${task.id}/`,
+      "PUT",
+      user,
+      setUser,
+      {
+        id: task.id,
+        stage: task.stage,
+      }
+    );
   };
 
   const deleteTask = (e, taskId, taskIndex, stageIndex) => {
     e.preventDefault();
+    authenticatedFetch(
+      `http://localhost:8000/projects/${projectId}/todos/${taskId}/`,
+      "DELETE",
+      user,
+      setUser
+    );
+
+    const newState = [...board];
+
+    newState[stageIndex].splice(taskIndex, 1);
+    setBoard(newState);
   };
 
   return (
@@ -190,46 +300,22 @@ const DeskopView = () => {
                         stageIndex={stageIndex}
                         provided={provided}
                         deleteTask={deleteTask}
+                        board={board}
+                        setBoard={setBoard}
                       />
                     )}
                   </Draggable>
                 ))}
                 {provided.placeholder}
-                <form onSubmit={(e) => addNewTask(e, stageIndex)}>
-                  <div>
-                    <label for="newTask" class="sr-only">
-                      Add new task
-                    </label>
-                    <div class="mt-1 flex rounded-md shadow-sm">
-                      <div class="relative flex-grow focus-within:z-10">
-                        <input
-                          id="newTask"
-                          class="form-input block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                          placeholder="User can..."
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-yellow-300 hover:text-gray-500 hover:bg-yellow-200 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          className="text-gray-700 w-5 h-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                <AddTaskForm
+                  stageIndex={stageIndex}
+                  user={user}
+                  setUser={setUser}
+                  projectId={projectId}
+                  board={board}
+                  setBoard={setBoard}
+                  stage={stageValues[stageIndex]}
+                />
               </section>
             )}
           </Droppable>
