@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useParams, useHistory } from "react-router-dom";
-import { UserContext } from "../App";
+import Modal from "react-modal";
+import { UserContext, ProjectContext } from "../App";
 import authenticatedFetch from "../utils/authenticatedFetch";
-// import useOnClickOutside from "../utils/useOnClickOutside";
-
-// Fake Data
-// const getItems = (count, offset = 0) =>
-//   Array.from({ length: count }, (v, k) => k).map((k) => ({
-//     id: `item-${k + offset}-${new Date().getTime()}`,
-//     name: `item ${k + offset}`,
-//   }));
 
 // ------- for drag-n-drop ---------
 const reorder = (list, startIndex, endIndex) => {
@@ -36,74 +29,135 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 // ---------------------------------
 
-// const MiniMenu = (todo) => {
-//   const [showing, setShowing] = useState(false);
+const TodoItem = ({
+  todo,
+  todoIndex,
+  stageIndex,
+  provided,
+  deleteTask,
+  board,
+  setBoard,
+}) => {
+  const { projectId } = useParams();
+  const { user, setUser } = useContext(UserContext);
+  const nameRef = useRef();
+  const descRef = useRef();
+  const [editIsShowing, setEditIsShowing] = useState(false);
 
-//   const toggleShowing = () => setShowing((prev) => !prev);
+  const handleChanges = async (e) => {
+    e.preventDefault();
+    const newTodo = await authenticatedFetch(
+      `https://discount-jira.herokuapp.com/projects/${projectId}/todos/${todo.id}/`,
+      "PUT",
+      user,
+      setUser,
+      {
+        id: todo.id,
+        name: nameRef.current.value,
+        description: descRef.current.value,
+      }
+    );
 
-//   return (
-//     <div className="ml-2 relative">
-//       <button
-//         onClick={toggleShowing}
-//         className="h-6 w-6 p-2 rounded-md flex flex-col items-center justify-center hover:bg-orange-100"
-//       >
-//         =
-//       </button>
-//       <ul
-//         hidden={!showing}
-//         className="absolute z-50 -top-10 -right-20 rounded-md h-20 w-32 p-2 text-white text-sm tracking-wide bg-gray-700"
-//       >
-//         <li>
-//           <button onCLick={() => null}>Delete Task</button>
-//         </li>
-//         <li>Temporary</li>
-//         <li>Temporary</li>
-//       </ul>
-//     </div>
-//   );
-// };
+    const newState = [...board];
 
-const TodoItem = ({ todo, todoIndex, stageIndex, provided, deleteTask }) => {
-  // const menuRef = useRef();
-  // const [menuIsShowing, setMenuIsShowing] = useState(false);
-  // useOnClickOutside(menuRef, () => setMenuIsShowing(false));
+    newState[stageIndex][todoIndex] = newTodo;
+    setBoard(newState);
+
+    setEditIsShowing(false);
+  };
   return (
     <div
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      className="relative col-span-1 flex shadow-sm rounded-md"
+      className="relative col-span-1 flex shadow-sm rounded-md max-w-full"
     >
       <div className="flex-shrink-0 flex items-center justify-center w-2 bg-red-600 uppercase text-white text-sm leading-5 font-medium rounded-l-md"></div>
-      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div className="flex-1 flex px-4 py-2 text-sm leading-5 truncate">
-          <h4 className="text-gray-900 font-medium transition ease-in-out duration-150">
+      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md">
+        <div
+          className="flex-1 flex px-4 py-2 text-sm leading-5"
+          onClick={() => setEditIsShowing(true)}
+        >
+          <h4 className="text-gray-900 break-normal max-w-full font-medium transition ease-in-out duration-150">
             {todo.name}
           </h4>
         </div>
         <div className="flex-shrink-0 pr-2">
           <button
-            id="pinned-project-options-menu-0"
             onClick={(e) => deleteTask(e, todo.id, todoIndex, stageIndex)}
-            className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
+            className="w-8 h-8 p-2 items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
+              className="w-full h-full"
               stroke="currentColor"
-              className="w-5 h-5 hover:text-red-600"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
+                strokeWidth={2}
                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
               />
             </svg>
           </button>
         </div>
       </div>
+      <Modal isOpen={editIsShowing}>
+        <form
+          onSubmit={(e) => handleChanges(e)}
+          className="mt-16 mx-auto max-w-2xl"
+        >
+          <div>
+            <label
+              for="name"
+              class="block text-sm font-medium leading-5 text-gray-700"
+            >
+              Name
+            </label>
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <input
+                id="name"
+                ref={nameRef}
+                defaultValue={todo.name}
+                class="form-input block w-full sm:text-sm sm:leading-5"
+              />
+            </div>
+          </div>
+          <div className="mt-8">
+            <label
+              for="description"
+              class="block text-sm font-medium leading-5 text-gray-700"
+            >
+              Description
+            </label>
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <textarea
+                id="description"
+                ref={descRef}
+                class="form-input block w-full sm:text-sm sm:leading-5"
+                defaultValue={todo.description}
+                placeholder="Enter a description here"
+              />
+            </div>
+          </div>
+          <div className="mt-8 flex justify-end">
+            <button
+              onClick={() => setEditIsShowing(false)}
+              className="flex-grow-0 flex justify-center ml-4 py-2 px-4 border border-transparent text-sm font-medium rounded-md border-gray-500 hover:bg-gray-100 focus:outline-none focus:border-gray-900 focus:shadow-outline-red active:bg-gray-700 transition duration-150 ease-in-out"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-grow-0 flex justify-center ml-4 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition duration-150 ease-in-out"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
@@ -193,6 +247,9 @@ const DeskopView = () => {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
   const [board, setBoard] = useState([]);
+  const { project, setProject } = useContext(ProjectContext);
+
+  useEffect(() => setProject(projectId), []);
 
   useEffect(() => {
     const getProjects = async () => {
@@ -205,7 +262,7 @@ const DeskopView = () => {
 
       if (todos === null) {
         history.push("/login");
-      } else {
+      } else if (Array.isArray(todos)) {
         const newBoard = stageValues.map((stage) =>
           todos.filter((todo) => todo.stage === stage)
         );
@@ -257,6 +314,7 @@ const DeskopView = () => {
       {
         id: task.id,
         stage: task.stage,
+        name: task.name,
       }
     );
   };

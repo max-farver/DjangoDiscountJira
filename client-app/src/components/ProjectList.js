@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useOnClickOutside from "../utils/useOnClickOutside";
 import { Link, useHistory } from "react-router-dom";
-import { UserContext } from "../App";
+import { UserContext, ProjectContext } from "../App";
 import authenticatedFetch from "../utils/authenticatedFetch.js";
 
 const AddProjectForm = ({ projects, setProjects }) => {
@@ -85,40 +85,6 @@ const ProjectCard = ({ project, gridIndex }) => {
           </p>
         </div>
       </Link>
-      <div className="flex-shrink-0 pr-2 z-100 self-center">
-        <button
-          id="pinned-project-options-menu-0"
-          onClick={() => setMenuIsShowing(true)}
-          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:text-gray-500 focus:bg-gray-100 transition ease-in-out duration-150"
-        >
-          <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
-        </button>
-        <div
-          ref={menuRef}
-          className={`${
-            menuIsShowing ? "block" : "hidden"
-          } z-10 mx-3 origin-top-right absolute right-10 top-3 w-48 mt-1 rounded-md shadow-lg`}
-        >
-          <div
-            className="rounded-md bg-white shadow-xs"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="pinned-project-options-menu-0"
-          >
-            <div className="py-1">
-              <button
-                onClick={() => null}
-                className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                role="menuitem"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
@@ -126,6 +92,9 @@ const ProjectCard = ({ project, gridIndex }) => {
 const ProjectList = () => {
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
+  const { project, setProject } = useContext(ProjectContext);
+
+  useEffect(() => setProject(null), []);
 
   const [projects, setProjects] = useState([]);
 
