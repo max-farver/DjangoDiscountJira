@@ -214,7 +214,7 @@ const DeskopView = () => {
       }
     };
     getProjects();
-  }, [projectId, setUser, user]);
+  }, [projectId, setUser, user, history]);
 
   if (user === null) {
     history.push("/login");
