@@ -203,11 +203,15 @@ const DeskopView = () => {
         setUser
       );
 
-      const newBoard = stageValues.map((stage) =>
-        todos.filter((todo) => todo.stage === stage)
-      );
+      if (todos === null) {
+        history.push("/login");
+      } else {
+        const newBoard = stageValues.map((stage) =>
+          todos.filter((todo) => todo.stage === stage)
+        );
 
-      setBoard(newBoard);
+        setBoard(newBoard);
+      }
     };
     getProjects();
   }, [projectId, setUser, user]);

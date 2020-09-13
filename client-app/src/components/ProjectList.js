@@ -137,7 +137,7 @@ const ProjectList = () => {
         user,
         setUser
       );
-      setProjects(proj || []);
+      setProjects(proj);
     };
     getProjects();
   }, [user, setUser]);
@@ -151,13 +151,14 @@ const ProjectList = () => {
       <>
         <h1 className="text-3xl font-bold mb-4">Projects</h1>
         <div className="grid gap-4 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, gridIndex) => (
-            <ProjectCard
-              project={project}
-              gridIndex={gridIndex}
-              key={project.id}
-            />
-          ))}
+          {Array.isArray(projects) &&
+            projects.map((project, gridIndex) => (
+              <ProjectCard
+                project={project}
+                gridIndex={gridIndex}
+                key={project.id}
+              />
+            ))}
           <AddProjectForm projects={projects} setProjects={setProjects} />
         </div>
       </>
