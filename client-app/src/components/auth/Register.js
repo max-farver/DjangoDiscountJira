@@ -150,30 +150,13 @@ const Register = () => {
                 </p>
               )}
             </div>
-
-            {/* <div className="mt-6 flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember_me"
-                  type="checkbox"
-                  className="form-checkbox h-4 w-4 text-red-600 transition duration-150 ease-in-out"
-                />
-                <label
-                  htmlFor="remember_me"
-                  className="ml-2 block text-sm leading-5 text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div>
-            </div> */}
-
             <div className="mt-6">
               <span className="block w-full rounded-md shadow-sm">
                 <button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition duration-150 ease-in-out"
                 >
-                  Sign in
+                  Sign up
                 </button>
               </span>
             </div>
