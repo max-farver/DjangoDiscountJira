@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import useOnClickOutside from "../utils/useOnClickOutside";
 import { Link, useHistory } from "react-router-dom";
 import { UserContext, ProjectContext } from "../App";
 import authenticatedFetch from "../utils/authenticatedFetch.js";
@@ -62,10 +61,7 @@ const AddProjectForm = ({ projects, setProjects }) => {
   );
 };
 
-const ProjectCard = ({ project, gridIndex }) => {
-  const menuRef = useRef();
-  const [menuIsShowing, setMenuIsShowing] = useState(false);
-  useOnClickOutside(menuRef, () => setMenuIsShowing(false));
+const ProjectCard = ({ project }) => {
   return (
     <div
       to={`/${project.id}`}
@@ -92,9 +88,9 @@ const ProjectCard = ({ project, gridIndex }) => {
 const ProjectList = () => {
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
-  const { project, setProject } = useContext(ProjectContext);
+  const { setProject } = useContext(ProjectContext);
 
-  useEffect(() => setProject(null), []);
+  useEffect(() => setProject(null), [setProject]);
 
   const [projects, setProjects] = useState([]);
 
@@ -109,7 +105,7 @@ const ProjectList = () => {
       setProjects(proj);
     };
     getProjects();
-  }, [user, setUser]);
+  }, [user, setUser, setProjects, setProject]);
 
   if (user === null) {
     history.push("/login");

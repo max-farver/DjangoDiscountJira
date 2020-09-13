@@ -247,9 +247,9 @@ const DeskopView = () => {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
   const [board, setBoard] = useState([]);
-  const { project, setProject } = useContext(ProjectContext);
+  const { setProject } = useContext(ProjectContext);
 
-  useEffect(() => setProject(projectId), []);
+  useEffect(() => setProject(projectId), [projectId, setProject]);
 
   useEffect(() => {
     const getProjects = async () => {

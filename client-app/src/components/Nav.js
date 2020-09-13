@@ -5,7 +5,7 @@ import useOnClickOutside from "../utils/useOnClickOutside";
 
 const Nav = () => {
   const { user, setUser } = useContext(UserContext);
-  const { project, setProject } = useContext(ProjectContext);
+  const { project } = useContext(ProjectContext);
   const profileRef = useRef();
   const [profileMenuIsShowing, setProfileMenuIsShowing] = useState(false);
   useOnClickOutside(profileRef, () => setProfileMenuIsShowing(false));

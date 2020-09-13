@@ -19,7 +19,7 @@ const ProjectName = ({ project, setProject, user, setUser, projectId }) => {
       setProjectName(await project.name);
     };
     getProjects();
-  }, []);
+  }, [user, setUser, setProject, setProjectName, projectId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
