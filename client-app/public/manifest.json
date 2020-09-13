@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Discount Jira",
+  "name": "A Really Bad Jira Clone",
   "icons": [
     {
       "src": "favicon.ico",
