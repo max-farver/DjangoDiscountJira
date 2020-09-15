@@ -144,10 +144,10 @@ const ProjectSettings = () => {
       <div className="h-full w-full flex flex-col items-center mt-10">
         <div className="h-72 flex flex-col lg:flex-row lg:items-center lg:space-x-4 space-y-6">
           {/* Add new member */}
-          <div>
+          {/* <div>
             <h2 className="text-xl font-bold">Add a Member</h2>
             <AddUserForm />
-          </div>
+          </div> */}
           <button
             onClick={deleteProject}
             className="bg-red-700 hover:bg-red-600 text-white font-bold uppercase rounded-md p-4 text-2xl shadow-lg"

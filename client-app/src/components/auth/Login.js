@@ -45,7 +45,7 @@ const Login = () => {
         <div className="text-center mb-6 p-2 border-2 border-red-700 rounded-md">
           <h3 className="text-2xl font-bold underline">Demo Credentials</h3>
           <p>
-            <strong>Username</strong>: demoUser <br />
+            <strong>Username</strong>: demoUser<br />
             <strong>Password</strong>: thisIsAPassword
           </p>
         </div>
