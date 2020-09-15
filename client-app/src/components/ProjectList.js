@@ -114,6 +114,11 @@ const ProjectList = () => {
   return (
     user && (
       <>
+        <p className="text-center mb-6 p-2 border-2 border-red-700 rounded-md">
+          <strong>Note: </strong>If projects don't appear, refresh the page. The
+          backend is hosted on Heroku and will take time to spin up if it has
+          been inactive.
+        </p>
         <h1 className="text-3xl font-bold mb-4">Projects</h1>
         <div className="grid gap-4 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {Array.isArray(projects) &&
