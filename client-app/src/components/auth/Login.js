@@ -42,6 +42,13 @@ const Login = () => {
   return (
     <div className="bg-gray-50 flex flex-col justify-center py-6 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center mb-6 p-2 border-2 border-red-700 rounded-md">
+          <h3 className="text-2xl font-bold underline">Demo Credentials</h3>
+          <p>
+            <strong>Username</strong>: demoUser <br />
+            <strong>Password</strong>: thisIsAPassword
+          </p>
+        </div>
         <h2 className="text-center text-3xl leading-9 font-extrabold text-gray-900">
           Sign in to your account
         </h2>
